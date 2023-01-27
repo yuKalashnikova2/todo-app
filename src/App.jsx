@@ -8,6 +8,8 @@ export const App = () => {
       <Header>
         <Form></Form>
       </Header>
+
+      <div className='space-y-4 p-6 text-center text-slate-400'>Задач нет</div>
     </Container>
   )
 }
