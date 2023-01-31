@@ -13,9 +13,10 @@ export const App = () => {
       <Container>
         <Header>
           <Form onSubmit={(task) => setTaskList([...taskList, task])}></Form>
-          <div>{JSON.stringify(taskList)}</div>
         </Header>
-        <Empty />
+        <Empty>
+          <div>{JSON.stringify(taskList)}</div>
+        </Empty>
       </Container>
     </Page>
   )
