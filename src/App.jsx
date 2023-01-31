@@ -17,11 +17,14 @@ export const App = () => {
         </Header>
         <Empty>
           <div>
-            {taskList.map((task, index) => (
-              <Task key={index} index={index + 1}>
-                {task}{' '}
-              </Task>
-            ))}
+            {' '}
+            {taskList.length === 0
+              ? 'Задач нет'
+              : taskList.map((task, index) => (
+                  <Task key={index} index={index + 1}>
+                    {task}
+                  </Task>
+                ))}
           </div>
         </Empty>
       </Container>
