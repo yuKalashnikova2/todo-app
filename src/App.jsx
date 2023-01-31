@@ -43,7 +43,9 @@ export const App = () => {
           </div>
         </Empty>
 
-        <Counter countCompleted={completedTaskList.length} countTotal={taskList.length}></Counter>
+        {taskList.length > 0 && (
+          <Counter countCompleted={completedTaskList.length} countTotal={taskList.length}></Counter>
+        )}
       </Container>
     </Page>
   )
