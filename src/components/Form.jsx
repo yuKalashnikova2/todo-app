@@ -13,7 +13,7 @@ const Form = ({ onSubmit }) => {
   return (
     <form
       onSubmit={handlSubmit}
-      className='flex h-12 w-9/12 justify-between rounded-md bg-white px-4 py-2 ring-2 ring-gray-300'
+      className='flex h-12 w-11/12 justify-between rounded-md bg-white px-4 py-2 ring-2 ring-gray-300'
     >
       <input
         value={taskName}
@@ -22,7 +22,7 @@ const Form = ({ onSubmit }) => {
         placeholder='Новая задача...'
         className='outline-0'
       />
-      <button type='submit' className='h-8 w-8 rounded-md bg-blue-600 text-white'>
+      <button type='submit' className='h-8 w-8 rounded-md bg-blue-600 text-xl text-white'>
         +
       </button>
     </form>
