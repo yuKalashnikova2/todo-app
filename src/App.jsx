@@ -9,7 +9,7 @@ import Counter from './components/Counter'
 
 export const App = () => {
   const [taskList, setTaskList] = useState([])
-  const [completedTaskList, setcompletedTaskList] = useState(['second'])
+  const [completedTaskList, setcompletedTaskList] = useState('')
 
   const handleCompleteTask = (task) => {
     if (completedTaskList.includes(task)) {
@@ -26,7 +26,6 @@ export const App = () => {
           <Form onSubmit={(task) => setTaskList([...taskList, task])}></Form>
         </Header>
         <Empty>
-          <div>{JSON.stringify(completedTaskList)}</div>
           <div className='my-2 flex flex-col'>
             {' '}
             {taskList.length === 0
