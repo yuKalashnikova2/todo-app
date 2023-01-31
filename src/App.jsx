@@ -8,6 +8,15 @@ import Task from './components/Task'
 
 export const App = () => {
   const [taskList, setTaskList] = useState([])
+  const [completedTaskList, setcompletedTaskList] = useState(['second'])
+
+  const handleCompleteTask = (task) => {
+    if (completedTaskList.includes(task)) {
+      setcompletedTaskList([...completedTaskList.filter((t) => t !== task)])
+    } else {
+      setcompletedTaskList([...completedTaskList, task])
+    }
+  }
 
   return (
     <Page>
@@ -16,12 +25,18 @@ export const App = () => {
           <Form onSubmit={(task) => setTaskList([...taskList, task])}></Form>
         </Header>
         <Empty>
-          <div>
+          <div>{JSON.stringify(completedTaskList)}</div>
+          <div className='my-2 flex flex-col'>
             {' '}
             {taskList.length === 0
               ? 'Задач нет'
               : taskList.map((task, index) => (
-                  <Task key={index} index={index + 1}>
+                  <Task
+                    key={index}
+                    index={index + 1}
+                    completed={completedTaskList.includes(task)}
+                    onChange={handleCompleteTask}
+                  >
                     {task}
                   </Task>
                 ))}
