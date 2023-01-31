@@ -1,10 +1,30 @@
-const Form = (props) => {
-  return (
-    <form className='flex h-12 w-9/12 justify-between rounded-md bg-white px-4 py-2 ring-2 ring-gray-300'>
-      {props.children}
+import { useState } from 'react'
 
-      <input type='text' placeholder='Новая задача...' className='outline-0' />
-      <button className='h-8 w-8 rounded-md bg-blue-600 text-white'>+</button>
+const Form = ({ onSubmit }) => {
+  const [taskName, setTaskName] = useState('')
+
+  const handlSubmit = (e) => {
+    e.preventDefault()
+
+    onSubmit(taskName)
+    setTaskName('')
+  }
+
+  return (
+    <form
+      onSubmit={handlSubmit}
+      className='flex h-12 w-9/12 justify-between rounded-md bg-white px-4 py-2 ring-2 ring-gray-300'
+    >
+      <input
+        value={taskName}
+        onChange={(e) => setTaskName(e.target.value)}
+        type='text'
+        placeholder='Новая задача...'
+        className='outline-0'
+      />
+      <button type='submit' className='h-8 w-8 rounded-md bg-blue-600 text-white'>
+        +
+      </button>
     </form>
   )
 }
