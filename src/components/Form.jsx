@@ -20,7 +20,7 @@ const Form = ({ onSubmit }) => {
         onChange={(e) => setTaskName(e.target.value)}
         type='text'
         placeholder='Новая задача...'
-        className='outline-0 placeholder:text-slate-500'
+        className='border-0 placeholder:text-slate-500 focus:ring-0'
       />
       <button type='submit' className='h-8 w-8 rounded-md bg-blue-600 text-xl text-white'>
         +
