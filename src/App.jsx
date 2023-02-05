@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Page from './components/Page'
 import Container from './components/Container'
 import Header from './components/Header'
@@ -11,10 +11,24 @@ export const App = () => {
   const [taskList, setTaskList] = useState([])
   const [completedTaskList, setcompletedTaskList] = useState(['second'])
   const [error, setError] = useState('')
-  const addTask = (task) => setTaskList([...taskList, task])
+  const addTask = (task) => {
+    const newTaskList = [...taskList, task]
+
+    window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
+
+    setTaskList(newTaskList)
+  }
+
   const addCompletedTask = (task) => setcompletedTaskList([...completedTaskList, task])
 
-  const removeTask = (task) => setTaskList(taskList.filter((t) => t !== task))
+  const removeTask = (task) => {
+    const newTaskList = taskList.filter((t) => t !== task)
+
+    window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
+
+    setTaskList(newTaskList)
+  }
+
   const removeCompletedTask = (task) => setcompletedTaskList(completedTaskList.filter((t) => t !== task))
 
   const handleSubmit = (task) => {
@@ -45,6 +59,13 @@ export const App = () => {
     removeCompletedTask(task)
   }
 
+  useEffect(() => {
+    const taskListStr = window.localStorage.getItem('taskList')
+    const taskList = JSON.parse(taskListStr)
+
+    setTaskList(taskList)
+  }, [])
+
   return (
     <Page>
       <Container>
@@ -62,7 +83,7 @@ export const App = () => {
           )}
           <div className='my-2 flex flex-col'>
             {' '}
-            {taskList.length === 0
+            {taskList.length == 0
               ? 'Задач нет'
               : taskList.map((task, index) => (
                   <Task
