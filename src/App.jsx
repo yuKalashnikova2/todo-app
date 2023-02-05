@@ -9,21 +9,13 @@ import Counter from './components/Counter'
 
 export const App = () => {
   const [taskList, setTaskList] = useState([])
-  const [completedTaskList, setcompletedTaskList] = useState('')
+  const [completedTaskList, setcompletedTaskList] = useState(['second'])
   const [error, setError] = useState('')
+  const addTask = (task) => setTaskList([...taskList, task])
+  const addCompletedTask = (task) => setcompletedTaskList([...completedTaskList, task])
 
-  const handleCompleteTask = (task) => {
-    if (completedTaskList.includes(task)) {
-      setcompletedTaskList(completedTaskList.filter((t) => t !== task))
-    } else {
-      setcompletedTaskList([...completedTaskList, task])
-    }
-  }
-
-  const handleRemoveTask = (task) => {
-    setTaskList(taskList.filter((t) => t !== task))
-    setcompletedTaskList(completedTaskList.filter((t) => t !== task))
-  }
+  const removeTask = (task) => setTaskList(taskList.filter((t) => t !== task))
+  const removeCompletedTask = (task) => setcompletedTaskList(completedTaskList.filter((t) => t !== task))
 
   const handleSubmit = (task) => {
     setError('')
@@ -37,7 +29,20 @@ export const App = () => {
       return
     }
 
-    setTaskList([...taskList, task])
+    addTask(task)
+  }
+
+  const handleCompleteTask = (task) => {
+    if (completedTaskList.includes(task)) {
+      removeCompletedTask(task)
+    } else {
+      addCompletedTask(task)
+    }
+  }
+
+  const handleRemoveTask = (task) => {
+    removeTask(task)
+    removeCompletedTask(task)
   }
 
   return (
