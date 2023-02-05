@@ -20,7 +20,12 @@ export const App = () => {
     }
   }
 
-  const onSubmit = (task) => {
+  const handleRemoveTask = (task) => {
+    setTaskList(taskList.filter((t) => t !== task))
+    setcompletedTaskList(completedTaskList.filter((t) => t !== task))
+  }
+
+  const handleSubmit = (task) => {
     setError('')
 
     if (!task) {
@@ -39,7 +44,7 @@ export const App = () => {
     <Page>
       <Container>
         <Header>
-          <Form onSubmit={onSubmit} />
+          <Form onSubmit={handleSubmit} />
         </Header>
         <Empty>
           {error && (
@@ -60,6 +65,7 @@ export const App = () => {
                     index={index + 1}
                     completed={completedTaskList.includes(task)}
                     onChange={handleCompleteTask}
+                    onRemove={handleRemoveTask}
                   >
                     {task}
                   </Task>
