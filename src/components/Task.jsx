@@ -10,7 +10,7 @@ const Task = ({ index, children, completed, onChange, onRemove }) => {
         />
         {index}. {children}
       </label>
-      <button className='h-8 w-8 rounded-md  text-xl text-gray-400' onClick={() => onRemove(children)}>
+      <button className='h-8 w-8 rounded-md  text-xl text-gray-400' onClick={onRemove}>
         x
       </button>
     </div>

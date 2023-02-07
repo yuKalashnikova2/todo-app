@@ -26,8 +26,8 @@ export const App = () => {
     setTaskList(newTaskList)
   }
 
-  const removeTask = (task) => {
-    const newTaskList = taskList.filter((t) => t !== task)
+  const removeTask = (id) => {
+    const newTaskList = taskList.filter((task) => task.id !== id)
 
     // window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
 
@@ -104,7 +104,7 @@ export const App = () => {
                         index={index + 1}
                         completed={task.completed}
                         onChange={(value) => handleCompleteTask(value, task.id)}
-                        onRemove={handleRemoveTask}
+                        onRemove={() => handleRemoveTask(task.id)}
                       >
                         {task.name}
                       </Task>
