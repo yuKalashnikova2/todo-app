@@ -5,13 +5,14 @@ import Header from './components/Header'
 import Form from './components/Form'
 import Empty from './components/Empty'
 import Task from './components/Task'
-// import Counter from './components/Counter'
+import Counter from './components/Counter'
 
 export const App = () => {
   const [taskList, setTaskList] = useState([])
 
   const [error, setError] = useState('')
 
+  const countCompletedTask = taskList.reduce((acc, value) => (value.completed ? acc + 1 : acc), 0)
   const addTask = (task) => {
     const newTaskItem = {
       id: taskList.length + 1,
@@ -95,7 +96,7 @@ export const App = () => {
           {!!taskList && !!taskList.length && (
             <>
               <div className='my-2 flex flex-col'>
-                {' '}
+                <div>{JSON.stringify(taskList)}</div>
                 {taskList.length == 0
                   ? 'Задач нет'
                   : taskList.map((task, index) => (
@@ -111,7 +112,7 @@ export const App = () => {
                     ))}
               </div>
 
-              {/* <Counter countCompleted={completedTaskList.length} countTotal={taskList.length}></Counter> */}
+              <Counter countCompleted={countCompletedTask} countTotal={taskList.length}></Counter>
             </>
           )}
         </Empty>
