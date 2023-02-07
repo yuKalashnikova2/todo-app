@@ -61,7 +61,12 @@ export const App = () => {
 
   useEffect(() => {
     const taskListStr = window.localStorage.getItem('taskList')
-    const taskList = JSON.parse(taskListStr)
+
+    if (taskListStr) {
+      const taskList = JSON.parse(taskListStr)
+
+      setTaskList(taskList)
+    }
 
     setTaskList(taskList)
   }, [])
@@ -81,6 +86,7 @@ export const App = () => {
               </button>
             </div>
           )}
+
           <div className='my-2 flex flex-col'>
             {' '}
             {taskList.length == 0
