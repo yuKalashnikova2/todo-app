@@ -22,7 +22,7 @@ export const App = () => {
 
     const newTaskList = [...taskList, newTaskItem]
 
-    // window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
+    window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
 
     setTaskList(newTaskList)
   }
@@ -30,7 +30,7 @@ export const App = () => {
   const removeTask = (id) => {
     const newTaskList = taskList.filter((task) => task.id !== id)
 
-    // window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
+    window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
 
     setTaskList(newTaskList)
   }
@@ -97,7 +97,7 @@ export const App = () => {
             <>
               <div className='my-2 flex flex-col'>
                 <div>{JSON.stringify(taskList)}</div>
-                {taskList.length == 0
+                {!taskList
                   ? 'Задач нет'
                   : taskList.map((task, index) => (
                       <Task
