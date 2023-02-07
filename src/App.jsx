@@ -5,36 +5,40 @@ import Header from './components/Header'
 import Form from './components/Form'
 import Empty from './components/Empty'
 import Task from './components/Task'
-import Counter from './components/Counter'
+// import Counter from './components/Counter'
 
 export const App = () => {
   const [taskList, setTaskList] = useState([])
-  const [completedTaskList, setcompletedTaskList] = useState(['second'])
-  const [error, setError] = useState('')
-  const addTask = (task) => {
-    const newTaskList = [...taskList, task]
 
-    window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
+  const [error, setError] = useState('')
+
+  const addTask = (task) => {
+    const newTaskItem = {
+      id: taskList.length + 1,
+      name: task,
+      completed: false
+    }
+
+    const newTaskList = [...taskList, newTaskItem]
+
+    // window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
 
     setTaskList(newTaskList)
   }
-
-  const addCompletedTask = (task) => setcompletedTaskList([...completedTaskList, task])
 
   const removeTask = (task) => {
     const newTaskList = taskList.filter((t) => t !== task)
 
-    window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
+    // window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
 
     setTaskList(newTaskList)
   }
-
-  const removeCompletedTask = (task) => setcompletedTaskList(completedTaskList.filter((t) => t !== task))
 
   const handleSubmit = (task) => {
     setError('')
 
     if (!task) {
+      setError('Пожалуйста, укажите название задачи')
       return
     }
 
@@ -46,17 +50,18 @@ export const App = () => {
     addTask(task)
   }
 
-  const handleCompleteTask = (task) => {
-    if (completedTaskList.includes(task)) {
-      removeCompletedTask(task)
-    } else {
-      addCompletedTask(task)
-    }
+  const handleCompleteTask = (value, id) => {
+    const newTaskList = taskList.map((task) => {
+      if (task.id === id) {
+        task.completed = value
+      }
+      return task
+    })
+    setTaskList(newTaskList)
   }
 
   const handleRemoveTask = (task) => {
     removeTask(task)
-    removeCompletedTask(task)
   }
 
   useEffect(() => {
@@ -87,27 +92,29 @@ export const App = () => {
             </div>
           )}
 
-          <div className='my-2 flex flex-col'>
-            {' '}
-            {taskList.length == 0
-              ? 'Задач нет'
-              : taskList.map((task, index) => (
-                  <Task
-                    key={index}
-                    index={index + 1}
-                    completed={completedTaskList.includes(task)}
-                    onChange={handleCompleteTask}
-                    onRemove={handleRemoveTask}
-                  >
-                    {task}
-                  </Task>
-                ))}
-          </div>
-        </Empty>
+          {!!taskList && !!taskList.length && (
+            <>
+              <div className='my-2 flex flex-col'>
+                {' '}
+                {taskList.length == 0
+                  ? 'Задач нет'
+                  : taskList.map((task, index) => (
+                      <Task
+                        key={task.id}
+                        index={index + 1}
+                        completed={task.completed}
+                        onChange={(value) => handleCompleteTask(value, task.id)}
+                        onRemove={handleRemoveTask}
+                      >
+                        {task.name}
+                      </Task>
+                    ))}
+              </div>
 
-        {taskList.length > 0 && (
-          <Counter countCompleted={completedTaskList.length} countTotal={taskList.length}></Counter>
-        )}
+              {/* <Counter countCompleted={completedTaskList.length} countTotal={taskList.length}></Counter> */}
+            </>
+          )}
+        </Empty>
       </Container>
     </Page>
   )

@@ -6,7 +6,7 @@ const Task = ({ index, children, completed, onChange, onRemove }) => {
           type='checkbox'
           className='mr-4 rounded text-blue-500 focus:ring-0'
           checked={completed}
-          onChange={() => onChange(children)}
+          onChange={(e) => onChange(e.target.checked)}
         />
         {index}. {children}
       </label>
