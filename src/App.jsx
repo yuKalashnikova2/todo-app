@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Page from './components/Page'
 import Container from './components/Container'
 import Header from './components/Header'
@@ -7,8 +7,18 @@ import Empty from './components/Empty'
 import Task from './components/Task'
 import Counter from './components/Counter'
 
+const initialTaskList = () => {
+  const taskListStr = window.localStorage.getItem('taskList')
+
+  if (taskListStr) {
+    return JSON.parse(taskListStr)
+  } else {
+    return []
+  }
+}
+
 export const App = () => {
-  const [taskList, setTaskList] = useState([])
+  const [taskList, setTaskList] = useState(() => initialTaskList())
 
   const [error, setError] = useState('')
 
@@ -64,18 +74,6 @@ export const App = () => {
   const handleRemoveTask = (task) => {
     removeTask(task)
   }
-
-  useEffect(() => {
-    const taskListStr = window.localStorage.getItem('taskList')
-
-    if (taskListStr) {
-      const taskList = JSON.parse(taskListStr)
-
-      setTaskList(taskList)
-    }
-
-    setTaskList(taskList)
-  }, [])
 
   return (
     <Page>
