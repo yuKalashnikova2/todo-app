@@ -93,28 +93,26 @@ export const App = () => {
             </div>
           )}
 
-          {!!taskList && !!taskList.length && (
+          {(!!taskList && !!taskList.length && (
             <>
               <div className='my-2 flex flex-col'>
                 <div>{JSON.stringify(taskList)}</div>
-                {!taskList
-                  ? 'Задач нет'
-                  : taskList.map((task, index) => (
-                      <Task
-                        key={task.id}
-                        index={index + 1}
-                        completed={task.completed}
-                        onChange={(value) => handleCompleteTask(value, task.id)}
-                        onRemove={() => handleRemoveTask(task.id)}
-                      >
-                        {task.name}
-                      </Task>
-                    ))}
+                {taskList.map((task, index) => (
+                  <Task
+                    key={task.id}
+                    index={index + 1}
+                    completed={task.completed}
+                    onChange={(value) => handleCompleteTask(value, task.id)}
+                    onRemove={() => handleRemoveTask(task.id)}
+                  >
+                    {task.name}
+                  </Task>
+                ))}
               </div>
 
               <Counter countCompleted={countCompletedTask} countTotal={taskList.length}></Counter>
             </>
-          )}
+          )) || <div>Задач нет</div>}
         </Empty>
       </Container>
     </Page>
