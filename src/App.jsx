@@ -6,19 +6,10 @@ import Form from './components/Form'
 import Empty from './components/Empty'
 import Task from './components/Task'
 import Counter from './components/Counter'
-
-const initialTaskList = () => {
-  const taskListStr = window.localStorage.getItem('taskList')
-
-  if (taskListStr) {
-    return JSON.parse(taskListStr)
-  } else {
-    return []
-  }
-}
+import { useLocalStorage } from './hooks/useLocalStorage'
 
 export const App = () => {
-  const [taskList, setTaskList] = useState(() => initialTaskList())
+  const [taskList, setTaskList] = useLocalStorage('taskList', [])
 
   const [error, setError] = useState('')
 
@@ -32,15 +23,11 @@ export const App = () => {
 
     const newTaskList = [...taskList, newTaskItem]
 
-    window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
-
     setTaskList(newTaskList)
   }
 
   const removeTask = (id) => {
     const newTaskList = taskList.filter((task) => task.id !== id)
-
-    window.localStorage.setItem('taskList', JSON.stringify(newTaskList))
 
     setTaskList(newTaskList)
   }
@@ -94,7 +81,6 @@ export const App = () => {
           {(!!taskList && !!taskList.length && (
             <>
               <div className='my-2 flex flex-col'>
-                <div>{JSON.stringify(taskList)}</div>
                 {taskList.map((task, index) => (
                   <Task
                     key={task.id}
