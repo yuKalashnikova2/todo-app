@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import Page from './components/Page'
 import Container from './components/Container'
 import Header from './components/Header'
@@ -6,61 +6,118 @@ import Form from './components/Form'
 import Empty from './components/Empty'
 import Task from './components/Task'
 import Counter from './components/Counter'
-import { useLocalStorage } from './hooks/useLocalStorage'
+//import { useLocalStorage } from './hooks/useLocalStorage'
 
-export const App = () => {
-  const [taskList, setTaskList] = useLocalStorage('taskList', [])
-
-  const [error, setError] = useState('')
-
-  const countCompletedTask = taskList.reduce((acc, value) => (value.completed ? acc + 1 : acc), 0)
-  const addTask = (task) => {
+function taskReducer(taskList, action) {
+  if (action.type === 'ADD_TASK') {
     const newTaskItem = {
       id: taskList.length + 1,
-      name: task,
+      name: action.task,
       completed: false
     }
-
-    const newTaskList = [...taskList, newTaskItem]
-
-    setTaskList(newTaskList)
-  }
-
-  const removeTask = (id) => {
-    const newTaskList = taskList.filter((task) => task.id !== id)
-
-    setTaskList(newTaskList)
-  }
-
-  const handleSubmit = (task) => {
-    setError('')
-
-    if (!task) {
-      setError('Пожалуйста, укажите название задачи')
-      return
-    }
-
-    if (taskList.includes(task)) {
-      setError(<div className='uppercase text-red-500'>Такая задача уже есть!</div>)
-      return
-    }
-
-    addTask(task)
-  }
-
-  const handleCompleteTask = (value, id) => {
+    return [...taskList, newTaskItem]
+  } else if (action.type === 'REMOVE_TASK') {
+    return taskList.filter((task) => task.id !== action.id)
+  } else if (action.type === 'COMPLETE_TASK') {
     const newTaskList = taskList.map((task) => {
-      if (task.id === id) {
-        task.completed = value
+      if (task.id === action.id) {
+        task.completed = action.value
       }
       return task
     })
-    setTaskList(newTaskList)
+
+    return newTaskList
+  }
+}
+
+function errorReducer(error, action) {
+  if (action.type === 'SHOW_ERROR') {
+    return action.text
+  } else if (action.type === 'CLEAN_ERROR') {
+    return ''
+  }
+}
+
+export const App = () => {
+  //const [taskList, setTaskList] = useLocalStorage('taskList', [])
+  const [taskList, dispatchTaskList] = useReducer(taskReducer, [])
+  const [error, dispatchError] = useReducer(errorReducer, '')
+
+  const countCompletedTask = taskList.reduce((acc, value) => (value.completed ? acc + 1 : acc), 0)
+
+  const handleCleanError = () => {
+    dispatchError({ type: 'CLEAN_ERROR' })
   }
 
-  const handleRemoveTask = (task) => {
-    removeTask(task)
+  const handleSubmit = (task) => {
+    dispatchError({ type: 'CLEAN_ERROR' })
+
+    if (!task) {
+      dispatchError({
+        type: 'SHOW_ERROR',
+        text: 'Пожалуйста, укажите название задачи'
+      })
+      return
+    }
+
+    dispatchTaskList({ type: 'ADD_TASK', task })
   }
+
+  const handleCompleteTask = (value, id) => {
+    dispatchTaskList({ type: 'COMPLETE_TASK', value, id })
+  }
+
+  const handleRemoveTask = (id) => {
+    dispatchTaskList({ type: 'REMOVE_TASK', id })
+  }
+
+  // const addTask = (task) => {
+  //   const newTaskItem = {
+  //     id: taskList.length + 1,
+  //     name: task,
+  //     completed: false
+  //   }
+
+  //   const newTaskList = [...taskList, newTaskItem]
+
+  //   setTaskList(newTaskList)
+  // }
+
+  // const removeTask = (id) => {
+  //   const newTaskList = taskList.filter((task) => task.id !== id)
+
+  //   setTaskList(newTaskList)
+  // }
+
+  // const handleSubmit = (task) => {
+  //   setError('')
+
+  //   if (!task) {
+  //     setError('Пожалуйста, укажите название задачи')
+  //     return
+  //   }
+
+  //   if (taskList.includes(task)) {
+  //     setError(<div className='uppercase text-red-500'>Такая задача уже есть!</div>)
+  //     return
+  //   }
+
+  //   addTask(task)
+  // }
+
+  // const handleCompleteTask = (value, id) => {
+  //   const newTaskList = taskList.map((task) => {
+  //     if (task.id === id) {
+  //       task.completed = value
+  //     }
+  //     return task
+  //   })
+  //   setTaskList(newTaskList)
+  // }
+
+  // const handleRemoveTask = (task) => {
+  //   removeTask(task)
+  // }
 
   return (
     <Page>
@@ -72,7 +129,7 @@ export const App = () => {
           {error && (
             <div className='flex justify-between'>
               {error}{' '}
-              <button className='h-7 w-7 rounded-md bg-red-500 text-xl text-white' onClick={() => setError('')}>
+              <button className='h-7 w-7 rounded-md bg-red-500 text-xl text-white' onClick={handleCleanError}>
                 x
               </button>
             </div>
