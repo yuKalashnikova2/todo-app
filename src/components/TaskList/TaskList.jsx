@@ -7,11 +7,15 @@ import Form from '../Form'
 import Empty from '../Empty'
 import Task from '../Task'
 import Counter from '../Counter'
+import { initialTaskList } from './state'
 
 const TaskList = () => {
-  const [taskList, dispatchTaskList] = useReducer(taskReducer, [])
+  const [taskList, dispatchTaskList] = useReducer(
+    taskReducer,
+    { storageKey: 'taskList', initialValue: [] },
+    initialTaskList
+  )
   const [error, dispatchError] = useReducer(errorReducer, '')
-
   const countCompletedTask = taskList.reduce((acc, value) => (value.completed ? acc + 1 : acc), 0)
 
   const handleCleanError = () => {
@@ -71,8 +75,7 @@ const TaskList = () => {
                   </Task>
                 ))}
               </div>
-
-              <Counter countCompleted={countCompletedTask} countTotal={taskList.length}></Counter>
+              <Counter countCompleted={countCompletedTask} countTotal={taskList.length}></Counter>g
             </>
           )) || <div>Задач нет</div>}
         </Empty>

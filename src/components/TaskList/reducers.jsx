@@ -9,8 +9,10 @@ export function taskReducer(taskList, action) {
         name: action.task,
         completed: false
       }
+
       const newTaskList = [...taskList, newTaskItem]
       setItemStorage(localStorageKey, newTaskList)
+
       return newTaskList
     }
     case 'REMOVE_TASK': {
@@ -26,6 +28,7 @@ export function taskReducer(taskList, action) {
         return task
       })
       setItemStorage(localStorageKey, newTaskList)
+
       return newTaskList
     }
   }
