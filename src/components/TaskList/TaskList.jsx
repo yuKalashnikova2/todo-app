@@ -10,11 +10,8 @@ import Counter from '../Counter'
 import { initialTaskList } from './state'
 
 const TaskList = () => {
-  const [taskList, dispatchTaskList] = useReducer(
-    taskReducer,
-    { storageKey: 'taskList', initialValue: [] },
-    initialTaskList
-  )
+  const storageKey = 'taskList'
+  const [taskList, dispatchTaskList] = useReducer(taskReducer, { storageKey, initialValue: [] }, initialTaskList)
   const [error, dispatchError] = useReducer(errorReducer, '')
   const countCompletedTask = taskList.reduce((acc, value) => (value.completed ? acc + 1 : acc), 0)
 
@@ -33,15 +30,15 @@ const TaskList = () => {
       return
     }
 
-    dispatchTaskList({ type: 'ADD_TASK', task })
+    dispatchTaskList({ type: 'ADD_TASK', task, storageKey })
   }
 
   const handleCompleteTask = (value, id) => {
-    dispatchTaskList({ type: 'COMPLETE_TASK', value, id })
+    dispatchTaskList({ type: 'COMPLETE_TASK', value, id, storageKey })
   }
 
   const handleRemoveTask = (id) => {
-    dispatchTaskList({ type: 'REMOVE_TASK', id })
+    dispatchTaskList({ type: 'REMOVE_TASK', id, storageKey })
   }
 
   return (
@@ -75,7 +72,7 @@ const TaskList = () => {
                   </Task>
                 ))}
               </div>
-              <Counter countCompleted={countCompletedTask} countTotal={taskList.length}></Counter>g
+              <Counter countCompleted={countCompletedTask} countTotal={taskList.length}></Counter>
             </>
           )) || <div>Задач нет</div>}
         </Empty>

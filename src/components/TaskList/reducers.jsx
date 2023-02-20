@@ -1,7 +1,6 @@
 import { setItemStorage } from './utils'
 
 export function taskReducer(taskList, action) {
-  const localStorageKey = 'taskList'
   switch (action.type) {
     case 'ADD_TASK': {
       const newTaskItem = {
@@ -11,13 +10,17 @@ export function taskReducer(taskList, action) {
       }
 
       const newTaskList = [...taskList, newTaskItem]
-      setItemStorage(localStorageKey, newTaskList)
+      if (action.storageKey) {
+        setItemStorage(action.storageKey, newTaskList)
+      }
 
       return newTaskList
     }
     case 'REMOVE_TASK': {
       const newTaskList = taskList.filter((task) => task.id !== action.id)
-      setItemStorage(localStorageKey, newTaskList)
+      if (action.storageKey) {
+        setItemStorage(action.storageKey, newTaskList)
+      }
       return newTaskList
     }
     case 'COMPLETE_TASK': {
@@ -27,7 +30,9 @@ export function taskReducer(taskList, action) {
         }
         return task
       })
-      setItemStorage(localStorageKey, newTaskList)
+      if (action.storageKey) {
+        setItemStorage(action.storageKey, newTaskList)
+      }
 
       return newTaskList
     }
