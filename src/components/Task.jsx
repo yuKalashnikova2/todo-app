@@ -9,7 +9,6 @@ const Task = ({ index, children, completed, onChange, onRemove }) => {
           onChange={(e) => onChange(e.target.checked)}
         />
         {index}. {children}
-        <div>{console.log({ index, children, completed, onChange, onRemove })}</div>
       </label>
       <button className='h-8 w-8 rounded-md  text-xl text-gray-400' onClick={onRemove}>
         x

@@ -1,5 +1,5 @@
 import { taskReducer, errorReducer } from './reducers'
-import { useReducer } from 'react'
+import { useReducer, useState } from 'react'
 import Page from '../Page'
 import Container from '../Container'
 import Header from '../Header'
@@ -14,6 +14,9 @@ const TaskList = () => {
   const storageKey = 'taskList'
   const [taskList, dispatchTaskList] = useReducer(taskReducer, { storageKey, initialValue: [] }, initialTaskList)
   const [error, dispatchError] = useReducer(errorReducer, '')
+
+  const [filterActive, setFilterActive] = useState('')
+
   const countCompletedTask = taskList.reduce((acc, value) => (value.completed ? acc + 1 : acc), 0)
 
   const handleCleanError = () => {
@@ -42,6 +45,10 @@ const TaskList = () => {
     dispatchTaskList({ type: 'REMOVE_TASK', id, storageKey })
   }
 
+  const handleChangeFilter = (event) => {
+    setFilterActive(event.target.value)
+  }
+
   return (
     <Page>
       <Container>
@@ -58,7 +65,7 @@ const TaskList = () => {
             </div>
           )}
 
-          <Selected />
+          <Selected value={filterActive} onChange={handleChangeFilter} />
 
           {(!!taskList && !!taskList.length && (
             <>
