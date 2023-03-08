@@ -8,7 +8,7 @@ import Empty from '../Empty'
 import Task from '../Task'
 import Counter from '../Counter'
 import { initialTaskList } from './state'
-import Selected from '../Selected'
+import FilterTasks from '../FilterTasks'
 
 const TaskList = () => {
   const storageKey = 'taskList'
@@ -75,7 +75,7 @@ const TaskList = () => {
             </div>
           )}
 
-          <Selected value={filterActive} onChange={handleChangeFilter} />
+          <FilterTasks value={filterActive} onChange={handleChangeFilter} />
 
           {(!!taskList && !!taskList.length && (
             <>

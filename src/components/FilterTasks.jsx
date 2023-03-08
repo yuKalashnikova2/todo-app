@@ -1,4 +1,4 @@
-const Selected = ({ value, onChange }) => {
+const FilterTasks = ({ value, onChange }) => {
   return (
     <select
       className='mb-2 h-12 rounded-md border-slate-200 text-slate-500 focus:border-slate-800 focus:ring-0'
@@ -12,4 +12,4 @@ const Selected = ({ value, onChange }) => {
   )
 }
 
-export default Selected
+export default FilterTasks
