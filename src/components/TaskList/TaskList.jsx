@@ -8,6 +8,7 @@ import Empty from '../Empty'
 import Task from '../Task'
 import Counter from '../Counter'
 import { initialTaskList } from './state'
+import Selected from '../Selected'
 
 const TaskList = () => {
   const storageKey = 'taskList'
@@ -56,6 +57,8 @@ const TaskList = () => {
               </button>
             </div>
           )}
+
+          <Selected />
 
           {(!!taskList && !!taskList.length && (
             <>
