@@ -1,7 +1,9 @@
-const Counter = ({ countCompleted, countTotal }) => {
-  return (
+const Counter = ({ countCompleted = -1, countTotal }) => {
+  return countCompleted === -1 ? (
+    <div>All tasks: {countTotal}</div>
+  ) : (
     <div className='p-5 text-center text-gray-400'>
-      Сделано {countCompleted} из {countTotal}
+      Done {countCompleted} from {countTotal} tasks
     </div>
   )
 }

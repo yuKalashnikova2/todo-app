@@ -1,5 +1,5 @@
 import { taskReducer, errorReducer } from './reducers'
-import { useReducer, useState } from 'react'
+import { useReducer, useState, useMemo } from 'react'
 import Page from '../Page'
 import Container from '../Container'
 import Header from '../Header'
@@ -17,7 +17,17 @@ const TaskList = () => {
 
   const [filterActive, setFilterActive] = useState('')
 
-  const countCompletedTask = taskList.reduce((acc, value) => (value.completed ? acc + 1 : acc), 0)
+  const countCompletedTask = useMemo(() => {
+    return filterActive === '' ? taskList.reduce((acc, value) => (value.completed ? acc + 1 : acc), 0) : -1
+  }, [taskList, filterActive])
+
+  const filteredTaskList = useMemo(() => {
+    if (filterActive === '') {
+      return taskList
+    }
+    const value = filterActive === 'true'
+    return taskList.filter((task) => task.completed !== value)
+  }, [taskList, filterActive])
 
   const handleCleanError = () => {
     dispatchError({ type: 'CLEAN_ERROR' })
@@ -70,7 +80,7 @@ const TaskList = () => {
           {(!!taskList && !!taskList.length && (
             <>
               <div className='my-2 flex flex-col'>
-                {taskList.map((task, index) => (
+                {filteredTaskList.map((task, index) => (
                   <Task
                     key={task.id}
                     index={index + 1}
@@ -82,9 +92,9 @@ const TaskList = () => {
                   </Task>
                 ))}
               </div>
-              <Counter countCompleted={countCompletedTask} countTotal={taskList.length}></Counter>
+              <Counter countCompleted={countCompletedTask} countTotal={filteredTaskList.length}></Counter>
             </>
-          )) || <div>Задач нет</div>}
+          )) || <div>No tasks</div>}
         </Empty>
       </Container>
     </Page>
